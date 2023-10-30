@@ -1,0 +1,6 @@
+main: dev.oflords.gunsffa.GunsFFA
+name: GunsFFA
+load: STARTUP
+api-version: 1.20
+version: 1.0
+author: oflords
