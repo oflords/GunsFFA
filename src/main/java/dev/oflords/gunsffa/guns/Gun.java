@@ -6,9 +6,12 @@ import dev.oflords.lordutils.chat.CC;
 import dev.oflords.lordutils.item.ItemBuilder;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
@@ -43,16 +46,43 @@ public class Gun {
     private float jumpPenalty = 0;
     public Gun(String name) {
         this.name = name;
+
         guns.add(this);
     }
 
-    private ItemStack makeItem() {
-        ItemStack gun = new ItemBuilder(this.item).name(name).lore(CC.DARK_GRAY + this.name).build();
+    public static void init() {
+        FileConfiguration config = GunsFFA.get().getConfig();
+        ConfigurationSection guns = config.getConfigurationSection("Guns");
+
+        if (guns != null) {
+            for (String key : guns.getKeys(false)) {
+                var gun = guns.getConfigurationSection(key);
+
+                Gun newGun = new Gun(gun.getString("name"));
+                newGun.setItem(Material.getMaterial(gun.getString("item")));
+                newGun.setBulletDamage(gun.getDouble("bullet-damage"));
+                newGun.setBulletVelocity(gun.getDouble("bullet-velocity"));
+                newGun.setBulletAmount(gun.getInt("bullet-amount"));
+                newGun.setShootingCooldown(gun.getInt("shooting-cooldown"));
+                newGun.setShootSound(Sound.valueOf(gun.getString("shooting-sound")));
+                newGun.setSoundPitch(Float.parseFloat(gun.getString("shooting-sound-pitch")));
+                newGun.setSoundVolume(Float.parseFloat(gun.getString("shooting-sound-volume")));
+                newGun.setScatterArea(Float.parseFloat(gun.getString("scatter-area")));
+                newGun.setBasePenalty(Float.parseFloat(gun.getString("penalty-base")));
+                newGun.setSprintPenalty(Float.parseFloat(gun.getString("sprint-base")));
+                newGun.setJumpPenalty(Float.parseFloat(gun.getString("jump-base")));
+            }
+        }
+    }
+
+    public ItemStack makeItem() {
+        ItemStack gun = new ItemBuilder(this.item).name(this.name).lore(CC.DARK_GRAY + this.name).build();
         gun = NBTEditor.set(gun, this.name, "gunsFFA");
+        gun = NBTEditor.set(gun, 0L, "gunsFFA-cooldown");
         return gun;
     }
 
-    private void shoot(Player player) {
+    public void shoot(Player player) {
         player.playSound(player.getLocation(), this.shootSound, this.soundPitch, this.soundVolume);
         Location loc = player.getLocation().clone();
         for (int scatter = 0; scatter < this.bulletAmount; scatter++) {
@@ -65,8 +95,8 @@ public class Gun {
                 penalty += this.jumpPenalty;
             }
             Snowball s = player.launchProjectile(Snowball.class);
-            loc.setPitch((loc1.getPitch() + (ThreadLocalRandom.current().nextFloat(this.scatterArea, this.scatterArea) * penalty)));
-            loc.setYaw((loc1.getYaw() + (ThreadLocalRandom.current().nextFloat(this.scatterArea, this.scatterArea) * penalty)));
+            loc.setPitch((loc1.getPitch() + (ThreadLocalRandom.current().nextFloat(-this.scatterArea, this.scatterArea) * penalty)));
+            loc.setYaw((loc1.getYaw() + (ThreadLocalRandom.current().nextFloat(-this.scatterArea, this.scatterArea) * penalty)));
             s.setMetadata("gunsFFA", new FixedMetadataValue(GunsFFA.get(), this.bulletDamage));
             s.setVelocity(loc.getDirection().multiply(this.bulletVelocity));
         }
