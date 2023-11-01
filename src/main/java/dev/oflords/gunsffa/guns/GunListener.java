@@ -70,9 +70,11 @@ public class GunListener implements Listener {
                     Gun gun = Gun.getByName(gunName);
                     if (gun != null) {
                         gun.shoot(event.getPlayer());
-                        itemStack = NBTEditor.set(itemStack, System.currentTimeMillis() + (gun.getShootingCooldown() * 50L), "gunsFFA-cooldown");
+                        itemStack = NBTEditor.set(itemStack, System.currentTimeMillis() + gun.getShootingCooldown(), "gunsFFA-cooldown");
                         event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().getHeldItemSlot(), itemStack);
                     }
+                } else {
+                    player.updateInventory();
                 }
             }
         }

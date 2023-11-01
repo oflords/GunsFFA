@@ -5,7 +5,7 @@ Guns:
     bullet-damage: 14
     bullet-velocity: 5
     bullet-amount: 1
-    shooting-cooldown: 25
+    shooting-cooldown: 1250
     shooting-sound: "ENTITY_FIREWORK_ROCKET_BLAST"
     shooting-sound-pitch: 1.0
     shooting-sound-volume: 1.0
@@ -19,7 +19,7 @@ Guns:
     bullet-damage: 2.5
     bullet-velocity: 3
     bullet-amount: 1
-    shooting-cooldown: 4
+    shooting-cooldown: 160
     shooting-sound: "BLOCK_STONE_BUTTON_CLICK_ON"
     shooting-sound-pitch: 1.0
     shooting-sound-volume: 1.0
@@ -33,7 +33,7 @@ Guns:
     bullet-damage: 3.2
     bullet-velocity: 0.95
     bullet-amount: 8
-    shooting-cooldown: 20
+    shooting-cooldown: 1000
     shooting-sound: "BLOCK_PISTON_CONTRACT"
     shooting-sound-pitch: 1.0
     shooting-sound-volume: 1.0
@@ -47,7 +47,7 @@ Guns:
     bullet-damage: 2.5
     bullet-velocity: 2.5
     bullet-amount: 1
-    shooting-cooldown: 12
+    shooting-cooldown: 600
     shooting-sound: "ITEM_DYE_USE"
     shooting-sound-pitch: 1.0
     shooting-sound-volume: 1.0
