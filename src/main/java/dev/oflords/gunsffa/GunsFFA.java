@@ -1,5 +1,6 @@
 package dev.oflords.gunsffa;
 
+import dev.oflords.gunsffa.guns.Gun;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class GunsFFA extends JavaPlugin {
