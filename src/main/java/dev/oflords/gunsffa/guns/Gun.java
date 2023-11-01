@@ -48,7 +48,7 @@ public class Gun {
 
     private ItemStack makeItem() {
         ItemStack gun = new ItemBuilder(this.item).name(name).lore(CC.DARK_GRAY + this.name).build();
-        NBTEditor.set(gun, this.name, "gunsFFA");
+        gun = NBTEditor.set(gun, this.name, "gunsFFA");
         return gun;
     }
 

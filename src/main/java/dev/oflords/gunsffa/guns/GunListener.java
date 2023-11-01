@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class GunListener implements Listener {
 
@@ -47,18 +48,19 @@ public class GunListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onGunShoot(PlayerInteractEvent event) {
         if (event.getItem() != null && event.getAction().name().contains("RIGHT")) {
+            ItemStack itemStack = event.getItem();
             Player player = event.getPlayer();
 
-            if (event.getItem().equals(player.getInventory().getItemInOffHand())) {
+            if (itemStack.equals(player.getInventory().getItemInOffHand())) {
                 return;
             }
 
-            String gunName = NBTEditor.getString(event.getItem(), "gunsFFA");
+            String gunName = NBTEditor.getString(itemStack, "gunsFFA");
             if (gunName != null) {
-                if (NBTEditor.getLong(event.getItem(), "gunsFFA-cooldown") < System.currentTimeMillis()) {
+                if (NBTEditor.getLong(itemStack, "gunsFFA-cooldown") < System.currentTimeMillis()) {
                     Gun gun = Gun.getByName(gunName);
                     if (gun != null) {
-                        NBTEditor.set(event.getItem(), System.currentTimeMillis() + (gun.getShootingCooldown() * 50L), "cooldown");
+                        itemStack = NBTEditor.set(itemStack, System.currentTimeMillis() + (gun.getShootingCooldown() * 50L), "gunsFFA-cooldown");
                     }
                 }
             }
