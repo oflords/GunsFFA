@@ -1,5 +1,7 @@
-package dev.oflords.gunsffa.guns;
+package dev.oflords.gunsffa.listeners;
 
+import dev.oflords.gunsffa.GunsFFA;
+import dev.oflords.gunsffa.guns.Gun;
 import dev.oflords.gunsffa.utils.NBTEditor;
 import dev.oflords.lordutils.player.AttackerUtil;
 import dev.oflords.lordutils.player.PlayerStateUtil;
@@ -53,23 +55,17 @@ public class GunListener implements Listener {
             ItemStack itemStack = event.getItem();
             Player player = event.getPlayer();
 
+            GunsFFA.get().getGunsTask().getRightClickingPlayers().put(player.getUniqueId(), System.currentTimeMillis());
+
             if (itemStack.equals(player.getInventory().getItemInOffHand())) {
                 return;
             }
 
-            String gunName = NBTEditor.getString(itemStack, "gunsFFA");
-            if (gunName != null) {
-                event.setCancelled(true);
-                if (NBTEditor.getLong(itemStack, "gunsFFA-cooldown") < System.currentTimeMillis()) {
-                    Gun gun = Gun.getByName(gunName);
-                    if (gun != null) {
-                        gun.shoot(event.getPlayer());
-                        itemStack = NBTEditor.set(itemStack, System.currentTimeMillis() + gun.getShootingCooldown(), "gunsFFA-cooldown");
-                        event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().getHeldItemSlot(), itemStack);
-                    }
-                } else {
-                    player.updateInventory();
-                }
+            Gun gun = Gun.canShoot(itemStack);
+            if (gun != null) {
+                gun.shoot(event.getPlayer());
+                itemStack = NBTEditor.set(itemStack, System.currentTimeMillis() + (gun.getShootingCooldown() * 50L), "gunsFFA-cooldown");
+                event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().getHeldItemSlot(), itemStack);
             }
         }
     }

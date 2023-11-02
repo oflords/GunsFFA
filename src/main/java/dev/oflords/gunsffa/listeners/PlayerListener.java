@@ -1,4 +1,4 @@
-package dev.oflords.gunsffa.guns;
+package dev.oflords.gunsffa.listeners;
 
 import dev.oflords.lordutils.chat.CC;
 import dev.oflords.lordutils.player.PlayerStateUtil;

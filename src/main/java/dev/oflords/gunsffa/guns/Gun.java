@@ -82,8 +82,28 @@ public class Gun {
         return gun;
     }
 
+    public static Gun isGun(ItemStack itemStack) {
+        String gunName = NBTEditor.getString(itemStack, "gunsFFA");
+        if (gunName != null) {
+            return Gun.getByName(gunName);
+        }
+
+        return null;
+    }
+
+    public static Gun canShoot(ItemStack itemStack) {
+        String gunName = NBTEditor.getString(itemStack, "gunsFFA");
+        if (gunName != null) {
+            if (NBTEditor.getLong(itemStack, "gunsFFA-cooldown") < System.currentTimeMillis()) {
+                return Gun.getByName(gunName);
+            }
+        }
+
+        return null;
+    }
+
     public void shoot(Player player) {
-        player.playSound(player.getLocation(), this.shootSound, this.soundPitch, this.soundVolume);
+        player.playSound(player.getLocation(), this.shootSound, this.soundVolume, this.soundPitch);
         Location loc = player.getLocation().clone();
         for (int scatter = 0; scatter < this.bulletAmount; scatter++) {
             Location loc1 = loc.clone();
