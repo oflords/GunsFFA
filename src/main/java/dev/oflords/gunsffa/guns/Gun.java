@@ -27,6 +27,7 @@ public class Gun {
 
     @Getter static List<Gun> guns = new ArrayList<>();
 
+    @Getter private final String identifier;
     @Getter private final String name;
     private Material item;
     // Bullets
@@ -44,7 +45,8 @@ public class Gun {
     private float basePenalty = 0;
     private float sprintPenalty = 0;
     private float jumpPenalty = 0;
-    public Gun(String name) {
+    public Gun(String identifier, String name) {
+        this.identifier = identifier;
         this.name = name;
 
         guns.add(this);
@@ -58,7 +60,7 @@ public class Gun {
             for (String key : guns.getKeys(false)) {
                 var gun = guns.getConfigurationSection(key);
 
-                Gun newGun = new Gun(gun.getString("name"));
+                Gun newGun = new Gun(key, gun.getString("name"));
                 newGun.setItem(Material.getMaterial(gun.getString("item")));
                 newGun.setBulletDamage(gun.getDouble("bullet-damage"));
                 newGun.setBulletVelocity(gun.getDouble("bullet-velocity"));
@@ -76,7 +78,7 @@ public class Gun {
     }
 
     public ItemStack makeItem() {
-        ItemStack gun = new ItemBuilder(this.item).name(this.name).lore(CC.DARK_GRAY + this.name).build();
+        ItemStack gun = new ItemBuilder(this.item).unbreakable(true).name(CC.WHITE + this.name).lore(CC.DARK_GRAY + this.name).build();
         gun = NBTEditor.set(gun, this.name, "gunsFFA");
         gun = NBTEditor.set(gun, 0L, "gunsFFA-cooldown");
         return gun;
@@ -125,6 +127,16 @@ public class Gun {
     public static Gun getByName(String name) {
         for (Gun gun : Gun.guns) {
             if (gun.getName().equals(name)) {
+                return gun;
+            }
+        }
+
+        return null;
+    }
+
+    public static Gun getByIdentifier(String identifier) {
+        for (Gun gun : Gun.guns) {
+            if (gun.getIdentifier().equals(identifier)) {
                 return gun;
             }
         }

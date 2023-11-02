@@ -1,10 +1,9 @@
 package dev.oflords.gunsffa.listeners;
 
+import dev.oflords.gunsffa.guns.GunPlayer;
 import dev.oflords.lordutils.chat.CC;
 import dev.oflords.lordutils.player.PlayerStateUtil;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +12,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -26,11 +27,28 @@ public class PlayerListener implements Listener {
 
         PlayerStateUtil.reset(event.getPlayer());
         event.getPlayer().setGameMode(GameMode.ADVENTURE);
+        GunPlayer.createProfile(event.getPlayer().getUniqueId());
+
+        event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5));
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        event.getDrops().clear();
+        PlayerStateUtil.reset(event.getEntity());
+        event.getEntity().setGameMode(GameMode.ADVENTURE);
+        event.getEntity().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5));
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
+        GunPlayer.removeProfile(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onKick(PlayerKickEvent event) {
+        GunPlayer.removeProfile(event.getPlayer().getUniqueId());
     }
 
     @EventHandler

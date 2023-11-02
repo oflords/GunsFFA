@@ -2,10 +2,12 @@ package dev.oflords.gunsffa;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.oflords.gunsffa.commands.GetGunsCommand;
+import dev.oflords.gunsffa.commands.KitCommand;
 import dev.oflords.gunsffa.guns.Gun;
 import dev.oflords.gunsffa.guns.GunTask;
 import dev.oflords.gunsffa.listeners.GunListener;
 import dev.oflords.gunsffa.listeners.PlayerListener;
+import dev.oflords.gunsffa.listeners.WorldListener;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,10 +22,12 @@ public class GunsFFA extends JavaPlugin {
         this.saveDefaultConfig();
 
         CommandAPI.registerCommand(GetGunsCommand.class);
+        CommandAPI.registerCommand(KitCommand.class);
 
         Arrays.asList(
                 new GunListener(),
-                new PlayerListener()
+                new PlayerListener(),
+                new WorldListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         gunsTask = new GunTask();
