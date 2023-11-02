@@ -1,24 +1,42 @@
 package dev.oflords.gunsffa.listeners;
 
 import dev.oflords.gunsffa.GunsFFA;
+import dev.oflords.gunsffa.commands.KitCommand;
 import dev.oflords.gunsffa.guns.Gun;
 import dev.oflords.gunsffa.utils.NBTEditor;
 import dev.oflords.lordutils.player.AttackerUtil;
 import dev.oflords.lordutils.player.PlayerStateUtil;
 import org.bukkit.*;
+import org.bukkit.block.data.type.Sign;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class GunListener implements Listener {
+
+    @EventHandler
+    public void onSign(PlayerInteractEvent event) {
+        if (event.getClickedBlock() != null && event.getClickedBlock().getType().toString().contains("_SIGN")) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                org.bukkit.block.Sign sign = (org.bukkit.block.Sign) event.getClickedBlock().getState();
+
+                if (sign.getLine(0).contains("[Guns FFA]")) {
+                    KitCommand.execute(event.getPlayer(), sign.getLine(1));
+                }
+            }
+        }
+    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {

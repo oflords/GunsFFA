@@ -13,6 +13,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -29,15 +30,19 @@ public class PlayerListener implements Listener {
         event.getPlayer().setGameMode(GameMode.ADVENTURE);
         GunPlayer.createProfile(event.getPlayer().getUniqueId());
 
-        event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5));
+        event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5, 90, 0));
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+        GunPlayer gunPlayer = GunPlayer.getByUUID(event.getEntity().getUniqueId());
+        gunPlayer.setHasKit(false);
+        gunPlayer.setKillstreak(0);
+
         event.getDrops().clear();
         PlayerStateUtil.reset(event.getEntity());
         event.getEntity().setGameMode(GameMode.ADVENTURE);
-        event.getEntity().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5));
+        event.getEntity().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5, 90, 0));
     }
 
     @EventHandler
@@ -62,6 +67,17 @@ public class PlayerListener implements Listener {
     public void onPlace(BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            GunPlayer gunPlayer = GunPlayer.getByUUID(player.getUniqueId());
+            if (!gunPlayer.isHasKit()) {
+                event.setCancelled(true);
+            }
         }
     }
 

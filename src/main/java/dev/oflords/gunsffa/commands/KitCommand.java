@@ -10,6 +10,7 @@ import dev.oflords.gunsffa.guns.GunPlayer;
 import dev.oflords.lordutils.chat.CC;
 import dev.oflords.lordutils.item.ItemBuilder;
 import dev.oflords.lordutils.player.PlayerStateUtil;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -42,6 +43,7 @@ public class KitCommand {
         gunPlayer.setHasKit(true);
         PlayerStateUtil.reset(player);
 
+        player.setGameMode(GameMode.ADVENTURE);
         player.getInventory().addItem(gun.makeItem());
         player.getInventory().addItem(Gun.getByName("Pistol").makeItem());
         player.getInventory().addItem(new ItemBuilder(Material.WOODEN_SWORD).unbreakable(true).name(CC.WHITE + "Knife").build());
