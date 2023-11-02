@@ -2,28 +2,21 @@ package dev.oflords.gunsffa.guns;
 
 import dev.oflords.gunsffa.utils.NBTEditor;
 import dev.oflords.lordutils.player.AttackerUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import dev.oflords.lordutils.player.PlayerStateUtil;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class GunListener implements Listener {
-
-    @EventHandler
-    public void giveGun(PlayerJoinEvent event) {
-        for (Gun gun : Gun.getGuns()) {
-            event.getPlayer().getInventory().addItem(gun.makeItem());
-        }
-    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -66,6 +59,7 @@ public class GunListener implements Listener {
 
             String gunName = NBTEditor.getString(itemStack, "gunsFFA");
             if (gunName != null) {
+                event.setCancelled(true);
                 if (NBTEditor.getLong(itemStack, "gunsFFA-cooldown") < System.currentTimeMillis()) {
                     Gun gun = Gun.getByName(gunName);
                     if (gun != null) {
