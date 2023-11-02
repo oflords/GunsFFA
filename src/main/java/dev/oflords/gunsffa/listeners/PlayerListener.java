@@ -1,5 +1,7 @@
 package dev.oflords.gunsffa.listeners;
 
+import dev.oflords.gunsffa.GunsFFA;
+import dev.oflords.gunsffa.guns.Gun;
 import dev.oflords.gunsffa.guns.GunPlayer;
 import dev.oflords.lordutils.chat.CC;
 import dev.oflords.lordutils.player.PlayerStateUtil;
@@ -19,6 +21,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
 
@@ -40,9 +44,18 @@ public class PlayerListener implements Listener {
         gunPlayer.setKillstreak(0);
 
         event.getDrops().clear();
-        PlayerStateUtil.reset(event.getEntity());
-        event.getEntity().setGameMode(GameMode.ADVENTURE);
-        event.getEntity().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5, 90, 0));
+    }
+
+    @EventHandler
+    public void onRepsawn(PlayerRespawnEvent event) {
+        PlayerStateUtil.reset(event.getPlayer(), false, false);
+        event.getPlayer().setGameMode(GameMode.ADVENTURE);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5, 90, 0));
+            }
+        }.runTask(GunsFFA.get());
     }
 
     @EventHandler
