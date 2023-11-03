@@ -3,6 +3,7 @@ package dev.oflords.gunsffa.managers;
 import dev.oflords.gunsffa.GunsFFA;
 import dev.oflords.gunsffa.guns.GunPlayer;
 import dev.oflords.lordutils.chat.CC;
+import dev.oflords.lordutils.item.ItemBuilder;
 import dev.oflords.lordutils.player.PlayerStateUtil;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatMessageType;
@@ -64,6 +65,8 @@ public class GameManager {
                 killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
             }
             if (killstreak % 5 == 0) {
+                actionBar += ", +1 Frag Grenade";
+                killer.getInventory().addItem(new ItemBuilder(Material.TNT).name(CC.WHITE + "Frag Grenade").build());
                 Bukkit.broadcastMessage(CC.DARK_PURPLE + "[K] " + CC.GREEN + killer.getName() + CC.GOLD + " has a killstreak of " + CC.RED + CC.BOLD + killstreak);
             }
 

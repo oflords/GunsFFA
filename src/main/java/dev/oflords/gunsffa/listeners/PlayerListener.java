@@ -8,6 +8,7 @@ import dev.oflords.lordutils.player.PlayerStateUtil;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -15,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -25,6 +27,55 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
+
+    @EventHandler
+    public void onFragGrenade(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            ItemStack item = player.getInventory().getItemInMainHand();
+
+            if (item.getType() == Material.TNT) {
+                event.setCancelled(true);
+
+                if (item.getAmount() > 1) {
+                    item.setAmount(item.getAmount() - 1);
+                } else {
+                    player.getInventory().setItemInMainHand(null);
+                }
+
+                TNTPrimed tnt = player.getWorld().spawn(player.getEyeLocation(), TNTPrimed.class);
+                tnt.setFuseTicks(60);
+                tnt.setYield(0);
+                tnt.setCustomName("GunsFFA-Frag");
+                tnt.setCustomNameVisible(false);
+                tnt.setIsIncendiary(false);
+                tnt.setVelocity(player.getLocation().getDirection().multiply(1.5));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onFragGrenadeExplode(EntityExplodeEvent event) {
+        if (event.getEntity() instanceof TNTPrimed tnt) {
+            if (tnt.getCustomName() != null && tnt.getCustomName().equals("GunsFFA-Frag")) {
+                for (Player nearbyPlayer : tnt.getWorld().getPlayers()) {
+                    double distance = nearbyPlayer.getLocation().distance(tnt.getLocation());
+                    if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 5) {
+                        nearbyPlayer.damage(2.0); // Adjust the damage value as desired
+                    } else if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 4) {
+                        nearbyPlayer.damage(4.0); // Adjust the damage value as desired
+                    } else if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 3) {
+                        nearbyPlayer.damage(6.0); // Adjust the damage value as desired
+                    } else if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 2) {
+                        nearbyPlayer.damage(8.0); // Adjust the damage value as desired
+                    } else if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 1) {
+                        nearbyPlayer.damage(10.0); // Adjust the damage value as desired
+                    }
+                }
+            }
+        }
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
