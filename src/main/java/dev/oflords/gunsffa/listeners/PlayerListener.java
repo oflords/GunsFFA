@@ -35,6 +35,7 @@ public class PlayerListener implements Listener {
         GunPlayer.createProfile(event.getPlayer().getUniqueId());
         GunPlayer gunPlayer = GunPlayer.getByUUID(event.getPlayer().getUniqueId());
 
+        event.getPlayer().setPlayerListHeaderFooter(CC.DARK_PURPLE + CC.BOLD + "Mythic Network", CC.PINK + "discord.mythic.gg");
         event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5, 90, 0));
 
         new BukkitRunnable() {

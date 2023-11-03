@@ -10,6 +10,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -36,22 +38,29 @@ public class GameManager {
         GunPlayer deadGunPlayer = GunPlayer.getByUUID(deadPlayer.getUniqueId());
         deadGunPlayer.reset();
         deadGunPlayer.incrementDeaths();
+        deadGunPlayer.save();
 
         if (killer != null) {
             GunPlayer killerGunPlayer = GunPlayer.getByUUID(killer.getUniqueId());
             killerGunPlayer.incrementKills();
             killerGunPlayer.incrementKillstreak();
+            killerGunPlayer.save();
             int killstreak = killerGunPlayer.getKillstreak();
             Bukkit.broadcastMessage(CC.DARK_PURPLE + "[K] " + CC.RED + deadPlayer.getName() + CC.WHITE + " was killed by " + CC.GREEN + killer.getName() + CC.GOLD + " [" + CC.RED + killstreak + CC.GOLD + "]");
-            String actionBar = "+2 Hearts";
+            String actionBar = "";
 
-            if (killer.getHealth() > 16) {
+            if (killer.getHealth() == 20) {
+                actionBar += "+5s Regen";
+                killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 1, false, false));
+            } else if (killer.getHealth() > 16) {
+                actionBar += "+ Full Hearts";
                 killer.setHealth(20);
             } else {
+                actionBar += "+2 Hearts";
                 killer.setHealth(killer.getHealth() + 4);
             }
             if (killstreak % 3 == 0) {
-                actionBar = "+1 Golden Apple";
+                actionBar += ", +1 Golden Apple";
                 killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
             }
             if (killstreak % 5 == 0) {

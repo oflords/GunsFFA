@@ -17,6 +17,8 @@ import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +32,7 @@ public class GunsFFA extends JavaPlugin {
     public void onEnable() {
         gunsFFA = this;
         this.saveDefaultConfig();
+        this.getPlayerDataFolder();
 
         CommandAPI.registerCommand(GetGunsCommand.class);
         CommandAPI.registerCommand(KitCommand.class);
@@ -56,5 +59,14 @@ public class GunsFFA extends JavaPlugin {
 
     public static GunsFFA get() {
         return gunsFFA;
+    }
+
+    public File getPlayerDataFolder() {
+        File playerDataFolder = new File(this.getDataFolder(), "playerData");
+        if(!playerDataFolder.exists()) {
+            playerDataFolder.mkdirs();
+        }
+
+        return new File(GunsFFA.get().getDataFolder(), "playerData");
     }
 }
