@@ -35,9 +35,11 @@ public class GameManager {
     public void handleDeath(Player deadPlayer, Player killer, boolean deathEvent) {
         GunPlayer deadGunPlayer = GunPlayer.getByUUID(deadPlayer.getUniqueId());
         deadGunPlayer.reset();
+        deadGunPlayer.incrementDeaths();
 
         if (killer != null) {
             GunPlayer killerGunPlayer = GunPlayer.getByUUID(killer.getUniqueId());
+            killerGunPlayer.incrementKills();
             killerGunPlayer.incrementKillstreak();
             int killstreak = killerGunPlayer.getKillstreak();
             Bukkit.broadcastMessage(CC.DARK_PURPLE + "[K] " + CC.RED + deadPlayer.getName() + CC.WHITE + " was killed by " + CC.GREEN + killer.getName() + CC.GOLD + " [" + CC.RED + killstreak + CC.GOLD + "]");

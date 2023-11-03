@@ -33,8 +33,16 @@ public class PlayerListener implements Listener {
         PlayerStateUtil.reset(event.getPlayer());
         event.getPlayer().setGameMode(GameMode.ADVENTURE);
         GunPlayer.createProfile(event.getPlayer().getUniqueId());
+        GunPlayer gunPlayer = GunPlayer.getByUUID(event.getPlayer().getUniqueId());
 
         event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5, 90, 0));
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                gunPlayer.enableScoreboard();
+            }
+        }.runTask(GunsFFA.get());
     }
 
     @EventHandler
@@ -54,11 +62,13 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
+        GunPlayer.getByUUID(event.getPlayer().getUniqueId()).disableScoreboard();
         GunPlayer.removeProfile(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent event) {
+        GunPlayer.getByUUID(event.getPlayer().getUniqueId()).disableScoreboard();
         GunPlayer.removeProfile(event.getPlayer().getUniqueId());
     }
 

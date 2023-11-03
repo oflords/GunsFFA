@@ -9,6 +9,7 @@ import dev.oflords.gunsffa.listeners.GunListener;
 import dev.oflords.gunsffa.listeners.PlayerListener;
 import dev.oflords.gunsffa.listeners.WorldListener;
 import dev.oflords.gunsffa.managers.GameManager;
+import dev.oflords.gunsffa.tasks.ScoreboardTask;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,6 +28,7 @@ public class GunsFFA extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        gunsFFA = this;
         this.saveDefaultConfig();
 
         CommandAPI.registerCommand(GetGunsCommand.class);
@@ -40,8 +42,8 @@ public class GunsFFA extends JavaPlugin {
 
         gunsTask = new GunTask();
         gunsTask.runTaskTimer(this, 40L, 1L);
+        new ScoreboardTask().runTaskTimerAsynchronously(this, 20L, 1L);
 
-        gunsFFA = this;
         Gun.init();
 
         new BukkitRunnable() {
