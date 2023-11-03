@@ -4,6 +4,7 @@ import dev.oflords.gunsffa.GunsFFA;
 import dev.oflords.gunsffa.commands.KitCommand;
 import dev.oflords.gunsffa.guns.Gun;
 import dev.oflords.gunsffa.utils.NBTEditor;
+import dev.oflords.lordutils.chat.CC;
 import dev.oflords.lordutils.player.AttackerUtil;
 import dev.oflords.lordutils.player.PlayerStateUtil;
 import org.bukkit.*;
@@ -22,6 +23,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 public class GunListener implements Listener {
 
@@ -49,6 +51,11 @@ public class GunListener implements Listener {
             if (event.getDamager() instanceof Snowball) {
                 Snowball s = (Snowball) event.getDamager();
                 if (!s.getMetadata("gunsFFA").isEmpty()) {
+                    if (damaged.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
+                        attacker.sendMessage(CC.RED + damaged.getName() + " is currently spawn protected...");
+                        event.setCancelled(true);
+                        return;
+                    }
                     double damage = s.getMetadata("gunsFFA").get(0).asInt();
 
                     attacker.playSound(attacker, Sound.ENTITY_ARROW_HIT_PLAYER, 1.0F, 1.0F);

@@ -5,6 +5,7 @@ import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
 import dev.jorel.commandapi.annotations.arguments.AStringArgument;
+import dev.oflords.gunsffa.GunsFFA;
 import dev.oflords.gunsffa.guns.Gun;
 import dev.oflords.gunsffa.guns.GunPlayer;
 import dev.oflords.lordutils.chat.CC;
@@ -15,6 +16,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.Random;
 
 @Command("kit")
 public class KitCommand {
@@ -47,6 +52,9 @@ public class KitCommand {
         player.getInventory().addItem(gun.makeItem());
         player.getInventory().addItem(Gun.getByName("Pistol").makeItem());
         player.getInventory().addItem(new ItemBuilder(Material.WOODEN_SWORD).unbreakable(true).name(CC.WHITE + "Knife").build());
-        player.teleport(new Location(player.getWorld(), 0, 100, 0));
+        Random random = new Random();
+        int index = random.nextInt(GunsFFA.getSpawns().size());
+        player.teleport(GunsFFA.getSpawns().get(index));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 40, 0, false, true));
     }
 }

@@ -14,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -22,6 +21,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
@@ -88,7 +88,7 @@ public class PlayerListener implements Listener {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             GunPlayer gunPlayer = GunPlayer.getByUUID(player.getUniqueId());
-            if (!gunPlayer.isHasKit()) {
+            if (!gunPlayer.isHasKit() || event.getCause() == EntityDamageEvent.DamageCause.FALL || player.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
                 event.setCancelled(true);
             }
         }
