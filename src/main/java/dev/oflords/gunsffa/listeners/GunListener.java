@@ -61,8 +61,9 @@ public class GunListener implements Listener {
                     attacker.playSound(attacker, Sound.ENTITY_ARROW_HIT_PLAYER, 1.0F, 1.0F);
                     damaged.playSound(damaged.getLocation(), Sound.ENTITY_PLAYER_HURT, 1.0F, 1.0F);
                     damaged.getWorld().playEffect(damaged.getLocation().clone().add(0, 0.5, 0), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
-                    if (damaged.getHealth()-damage < 0) {
-                        damaged.setHealth(0);
+                    if (damaged.getHealth()-damage <= 0) {
+                        // Handle Death
+                        GunsFFA.get().getGameManager().handleDeath(damaged, attacker, false);
                     } else {
                         damaged.setHealth(damaged.getHealth() - damage);
                     }

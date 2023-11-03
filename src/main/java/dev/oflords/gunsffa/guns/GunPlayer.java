@@ -45,4 +45,13 @@ public class GunPlayer {
         }
         return profiles.get(uuid);
     }
+
+    public void reset() {
+        this.setHasKit(false);
+        this.setKillstreak(0);
+    }
+
+    public void incrementKillstreak() {
+        this.killstreak++;
+    }
 }

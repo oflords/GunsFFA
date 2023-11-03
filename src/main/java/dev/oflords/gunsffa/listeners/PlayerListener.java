@@ -39,23 +39,16 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        GunPlayer gunPlayer = GunPlayer.getByUUID(event.getEntity().getUniqueId());
-        gunPlayer.setHasKit(false);
-        gunPlayer.setKillstreak(0);
+        event.setDeathMessage(null);
+        GunsFFA.get().getGameManager().handleDeath(event.getEntity(), event.getEntity().getKiller(), true);
 
         event.getDrops().clear();
+        event.setDroppedExp(0);
     }
 
     @EventHandler
     public void onRepsawn(PlayerRespawnEvent event) {
-        PlayerStateUtil.reset(event.getPlayer(), false, false);
-        event.getPlayer().setGameMode(GameMode.ADVENTURE);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 61.5, 99, 352.5, 90, 0));
-            }
-        }.runTask(GunsFFA.get());
+        GunsFFA.get().getGameManager().respawn(event.getPlayer());
     }
 
     @EventHandler

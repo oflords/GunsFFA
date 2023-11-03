@@ -8,6 +8,7 @@ import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import dev.oflords.gunsffa.GunsFFA;
 import dev.oflords.gunsffa.guns.Gun;
 import dev.oflords.gunsffa.guns.GunPlayer;
+import dev.oflords.gunsffa.managers.GameManager;
 import dev.oflords.lordutils.chat.CC;
 import dev.oflords.lordutils.item.ItemBuilder;
 import dev.oflords.lordutils.player.PlayerStateUtil;
@@ -53,8 +54,8 @@ public class KitCommand {
         player.getInventory().addItem(Gun.getByName("Pistol").makeItem());
         player.getInventory().addItem(new ItemBuilder(Material.WOODEN_SWORD).unbreakable(true).name(CC.WHITE + "Knife").build());
         Random random = new Random();
-        int index = random.nextInt(GunsFFA.getSpawns().size());
-        player.teleport(GunsFFA.getSpawns().get(index));
+        int index = random.nextInt(GameManager.getSpawns().size());
+        player.teleport(GameManager.getSpawns().get(index));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 40, 0, false, true));
     }
 }
