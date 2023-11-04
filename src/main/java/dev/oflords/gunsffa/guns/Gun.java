@@ -1,5 +1,9 @@
 package dev.oflords.gunsffa.guns;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
+import dev.dejvokep.boostedyaml.route.Route;
+import dev.dejvokep.boostedyaml.route.implementation.SingleKeyRoute;
 import dev.oflords.gunsffa.GunsFFA;
 import dev.oflords.gunsffa.utils.NBTEditor;
 import dev.oflords.lordutils.chat.CC;
@@ -53,14 +57,14 @@ public class Gun {
     }
 
     public static void init() {
-        FileConfiguration config = GunsFFA.get().getConfig();
-        ConfigurationSection guns = config.getConfigurationSection("Guns");
+        YamlDocument config = GunsFFA.get().getGunsConfig();
+        Section guns = config.getSection("Guns");
 
         if (guns != null) {
-            for (String key : guns.getKeys(false)) {
-                var gun = guns.getConfigurationSection(key);
+            for (Route key : guns.getRoutes(false)) {
+                var gun = guns.getSection(key);
 
-                Gun newGun = new Gun(key, gun.getString("name"));
+                Gun newGun = new Gun(gun.getString("id"), gun.getString("name"));
                 newGun.setItem(Material.getMaterial(gun.getString("item")));
                 newGun.setBulletDamage(gun.getDouble("bullet-damage"));
                 newGun.setBulletVelocity(gun.getDouble("bullet-velocity"));
@@ -73,6 +77,7 @@ public class Gun {
                 newGun.setBasePenalty(Float.parseFloat(gun.getString("penalty-base")));
                 newGun.setSprintPenalty(Float.parseFloat(gun.getString("sprint-base")));
                 newGun.setJumpPenalty(Float.parseFloat(gun.getString("jump-base")));
+                System.out.println("Loaded gun " + key.toString());
             }
         }
     }

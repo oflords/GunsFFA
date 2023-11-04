@@ -1,0 +1,91 @@
+Guns:
+  Minigun:
+    id: "Minigun"
+    name: "Minigun"
+    item: "IRON_SHOVEL"
+    bullet-damage: 2
+    bullet-velocity: 4.1
+    bullet-amount: 1
+    shooting-cooldown: 1
+    shooting-sound: "ENTITY_FIREWORK_ROCKET_BLAST"
+    shooting-sound-pitch: 0.5
+    shooting-sound-volume: 1.0
+    scatter-area: 0.1
+    penalty-base: 1.0
+    sprint-base: 1.0
+    jump-base: 1.0
+  Sniper:
+    id: "Sniper"
+    name: "Sniper Rifle"
+    item: "DIAMOND_HOE"
+    bullet-damage: 14
+    bullet-velocity: 4.1
+    bullet-amount: 1
+    shooting-cooldown: 25
+    shooting-sound: "ENTITY_FIREWORK_ROCKET_BLAST"
+    shooting-sound-pitch: 1.0
+    shooting-sound-volume: 1.0
+    scatter-area: 0.1
+    penalty-base: 1.0
+    sprint-base: 1.0
+    jump-base: 1.0
+  Rifle:
+    id: "Rifle"
+    name: "Rifle"
+    item: "NETHERITE_HOE"
+    bullet-damage: 5.5
+    bullet-velocity: 3.6
+    bullet-amount: 1
+    shooting-cooldown: 5
+    shooting-sound: "BLOCK_STONE_BREAK"
+    shooting-sound-pitch: 2.0
+    shooting-sound-volume: 1.0
+    scatter-area: 1.3
+    penalty-base: 1.0
+    sprint-base: 1.5
+    jump-base: 1.5
+  SMG:
+    id: "SMG"
+    name: "Sub Machine Gun"
+    item: "IRON_HOE"
+    bullet-damage: 2.5
+    bullet-velocity: 3
+    bullet-amount: 1
+    shooting-cooldown: 2
+    shooting-sound: "BLOCK_STONE_BUTTON_CLICK_ON"
+    shooting-sound-pitch: 1.0
+    shooting-sound-volume: 1.0
+    scatter-area: 2.0
+    penalty-base: 1.0
+    sprint-base: 1.0
+    jump-base: 1.0
+  Shotgun:
+    id: "Shotgun"
+    name: "Shotgun"
+    item: "GOLDEN_HOE"
+    bullet-damage: 3.2
+    bullet-velocity: 0.95
+    bullet-amount: 8
+    shooting-cooldown: 20
+    shooting-sound: "BLOCK_PISTON_CONTRACT"
+    shooting-sound-pitch: 1.0
+    shooting-sound-volume: 1.0
+    scatter-area: 4.0
+    penalty-base: 1.0
+    sprint-base: 0.5
+    jump-base: 0.5
+  Pistol:
+    id: "Pistol"
+    name: "Pistol"
+    item: "STONE_HOE"
+    bullet-damage: 2.2
+    bullet-velocity: 2.5
+    bullet-amount: 1
+    shooting-cooldown: 3
+    shooting-sound: "ITEM_DYE_USE"
+    shooting-sound-pitch: 1.0
+    shooting-sound-volume: 1.0
+    scatter-area: 1.0
+    penalty-base: 1.0
+    sprint-base: 1.0
+    jump-base: 1.0

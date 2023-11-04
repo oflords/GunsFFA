@@ -1,5 +1,6 @@
 package dev.oflords.gunsffa;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.jorel.commandapi.CommandAPI;
 import dev.oflords.gunsffa.commands.GetGunsCommand;
 import dev.oflords.gunsffa.commands.KitCommand;
@@ -10,6 +11,7 @@ import dev.oflords.gunsffa.listeners.PlayerListener;
 import dev.oflords.gunsffa.listeners.WorldListener;
 import dev.oflords.gunsffa.managers.GameManager;
 import dev.oflords.gunsffa.tasks.ScoreboardTask;
+import dev.oflords.lordutils.file.Config;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,10 +30,20 @@ public class GunsFFA extends JavaPlugin {
     @Getter private GunTask gunsTask;
     @Getter private GameManager gameManager;
 
+    @Getter private YamlDocument scoreboardConfig;
+    @Getter private YamlDocument gunsConfig;
+
     @Override
     public void onEnable() {
         gunsFFA = this;
         this.saveDefaultConfig();
+        try {
+            scoreboardConfig = YamlDocument.create(new File(getDataFolder(), "scoreboard.yml"), getResource("scoreboard.yml"));
+            gunsConfig = YamlDocument.create(new File(getDataFolder(), "guns.yml"), getResource("guns.yml"));
+        } catch (Exception ignored) {
+
+        }
+
         this.getPlayerDataFolder();
 
         CommandAPI.registerCommand(GetGunsCommand.class);
