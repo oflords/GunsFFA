@@ -60,13 +60,15 @@ public class GameManager {
                 actionBar += "+2 Hearts";
                 killer.setHealth(killer.getHealth() + 4);
             }
+            if (killstreak % 2 == 0) {
+                actionBar += ", +1 Frag Grenade";
+                killer.getInventory().addItem(new ItemBuilder(Material.TNT).name(CC.WHITE + "Frag Grenade").build());
+            }
             if (killstreak % 3 == 0) {
                 actionBar += ", +1 Golden Apple";
                 killer.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
             }
             if (killstreak % 5 == 0) {
-                actionBar += ", +1 Frag Grenade";
-                killer.getInventory().addItem(new ItemBuilder(Material.TNT).name(CC.WHITE + "Frag Grenade").build());
                 Bukkit.broadcastMessage(CC.DARK_PURPLE + "[K] " + CC.GREEN + killer.getName() + CC.GOLD + " has a killstreak of " + CC.RED + CC.BOLD + killstreak);
             }
 

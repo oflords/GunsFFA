@@ -69,9 +69,7 @@ public class GunListener implements Listener {
                     }
                 }
             } else if (event.getDamager() instanceof Player) {
-                if (attacker.getInventory().getItemInMainHand().getType() == Material.WOODEN_AXE) {
-                    event.setCancelled(false);
-                }
+                event.setCancelled(attacker.getInventory().getItemInMainHand().getType() != Material.WOODEN_SWORD);
             }
         }
     }

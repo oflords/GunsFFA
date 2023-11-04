@@ -63,16 +63,24 @@ public class PlayerListener implements Listener {
             if (tnt.getCustomName() != null && tnt.getCustomName().equals("GunsFFA-Frag")) {
                 for (Player nearbyPlayer : tnt.getWorld().getPlayers()) {
                     double distance = nearbyPlayer.getLocation().distance(tnt.getLocation());
+                    int damage = 0;
                     if (distance <= 1) {
-                        nearbyPlayer.damage(10);
+                        damage = 10;
                     } else if (distance <= 2) {
-                        nearbyPlayer.damage(8);
+                        damage = 8;
                     } else if (distance <= 3) {
-                        nearbyPlayer.damage(6);
-                    } else if (distance <= 4) {
-                        nearbyPlayer.damage(4);
+                        damage = 6;
                     } else if (distance <= 5) {
-                        nearbyPlayer.damage(2);
+                        damage = 4;
+                    } else if (distance <= 7) {
+                        damage = 2;
+                    }
+
+                    if (nearbyPlayer.getHealth()-damage <= 0) {
+                        // Handle Death
+                        GunsFFA.get().getGameManager().handleDeath(nearbyPlayer, null, false);
+                    } else {
+                        nearbyPlayer.setHealth(nearbyPlayer.getHealth() - damage);
                     }
                 }
             }
