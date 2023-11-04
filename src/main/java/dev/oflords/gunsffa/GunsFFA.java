@@ -10,6 +10,7 @@ import dev.oflords.gunsffa.listeners.GunListener;
 import dev.oflords.gunsffa.listeners.PlayerListener;
 import dev.oflords.gunsffa.listeners.WorldListener;
 import dev.oflords.gunsffa.managers.GameManager;
+import dev.oflords.gunsffa.managers.ScoreboardManager;
 import dev.oflords.gunsffa.tasks.ScoreboardTask;
 import dev.oflords.lordutils.file.Config;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class GunsFFA extends JavaPlugin {
     private static GunsFFA gunsFFA;
     @Getter private GunTask gunsTask;
     @Getter private GameManager gameManager;
+    @Getter private ScoreboardManager scoreboardManager;
 
     @Getter private YamlDocument scoreboardConfig;
     @Getter private YamlDocument gunsConfig;
@@ -61,6 +63,7 @@ public class GunsFFA extends JavaPlugin {
 
         Gun.init();
 
+        scoreboardManager = new ScoreboardManager();
         new BukkitRunnable() {
             @Override
             public void run() {

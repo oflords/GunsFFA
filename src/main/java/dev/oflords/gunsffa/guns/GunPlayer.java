@@ -6,6 +6,7 @@ import fr.mrmicky.fastboard.FastBoard;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -117,7 +118,7 @@ public class GunPlayer {
 
     public void enableScoreboard() {
         setScoreBoard(new FastBoard(getPlayer()));
-        getScoreBoard().updateTitle(CC.DARK_PURPLE + CC.BOLD + " Mythic" + CC.GRAY + CC.ITALIC + " [GunsFFA] ");
+        getScoreBoard().updateTitle(ChatColor.translateAlternateColorCodes('&', GunsFFA.get().getScoreboardManager().getTitle()));
     }
 
     public void disableScoreboard() {
