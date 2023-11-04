@@ -53,6 +53,7 @@ public class KitCommand {
         player.getInventory().addItem(gun.makeItem());
         player.getInventory().addItem(Gun.getByName("Pistol").makeItem());
         player.getInventory().addItem(new ItemBuilder(Material.WOODEN_SWORD).unbreakable(true).name(CC.WHITE + "Knife").build());
+        player.getInventory().addItem(new ItemBuilder(Material.TNT).name(CC.WHITE + "Frag Grenade").build());
         Random random = new Random();
         int index = random.nextInt(GameManager.getSpawns().size());
         player.teleport(GameManager.getSpawns().get(index));

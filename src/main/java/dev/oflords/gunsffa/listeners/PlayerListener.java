@@ -23,6 +23,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -34,8 +35,9 @@ public class PlayerListener implements Listener {
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = player.getInventory().getItemInMainHand();
+            ItemMeta itemMeta = item.getItemMeta();
 
-            if (item.getType() == Material.TNT) {
+            if (item.getType() == Material.TNT && itemMeta != null && itemMeta.getDisplayName().contains("Frag Grenade")) {
                 event.setCancelled(true);
 
                 if (item.getAmount() > 1) {
@@ -61,16 +63,16 @@ public class PlayerListener implements Listener {
             if (tnt.getCustomName() != null && tnt.getCustomName().equals("GunsFFA-Frag")) {
                 for (Player nearbyPlayer : tnt.getWorld().getPlayers()) {
                     double distance = nearbyPlayer.getLocation().distance(tnt.getLocation());
-                    if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 5) {
-                        nearbyPlayer.damage(2.0); // Adjust the damage value as desired
-                    } else if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 4) {
-                        nearbyPlayer.damage(4.0); // Adjust the damage value as desired
-                    } else if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 3) {
-                        nearbyPlayer.damage(6.0); // Adjust the damage value as desired
-                    } else if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 2) {
-                        nearbyPlayer.damage(8.0); // Adjust the damage value as desired
-                    } else if (nearbyPlayer.getLocation().distance(tnt.getLocation()) <= 1) {
-                        nearbyPlayer.damage(10.0); // Adjust the damage value as desired
+                    if (distance <= 1) {
+                        nearbyPlayer.damage(10);
+                    } else if (distance <= 2) {
+                        nearbyPlayer.damage(8);
+                    } else if (distance <= 3) {
+                        nearbyPlayer.damage(6);
+                    } else if (distance <= 4) {
+                        nearbyPlayer.damage(4);
+                    } else if (distance <= 5) {
+                        nearbyPlayer.damage(2);
                     }
                 }
             }
